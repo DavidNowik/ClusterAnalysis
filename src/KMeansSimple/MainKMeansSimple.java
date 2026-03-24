@@ -1,7 +1,9 @@
+package KMeansSimple;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class MainKMeansSimple {
 
     public static void main(String[] args) {
 
@@ -24,7 +26,7 @@ public class Main {
         points.add(new Point(4.5, 6.8));
         points.add(new Point(5, 7.5));
 
-        int k = 3;
+        int k = 2;
         int iterations = 20;
 
         KMeans.run(points, k, iterations);

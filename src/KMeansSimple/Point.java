@@ -1,3 +1,5 @@
+package KMeansSimple;
+
 public class Point {
 
     public double x;
