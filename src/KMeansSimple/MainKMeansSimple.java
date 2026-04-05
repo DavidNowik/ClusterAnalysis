@@ -26,7 +26,7 @@ public class MainKMeansSimple {
         points.add(new Point(4.5, 6.8));
         points.add(new Point(5, 7.5));
 
-        int k = 2;
+        int k = 3;
         int iterations = 20;
 
         KMeans.run(points, k, iterations);

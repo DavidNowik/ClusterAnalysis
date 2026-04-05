@@ -7,7 +7,9 @@ import java.util.Random;
 public class KMeans {
 
     public static List<Point> centroids = new ArrayList<>();
-
+    // Erzeugt zur Laufzeit genauere Informationen, wie der Algorithmus funktioniert.
+    //Set true für mehr Informationen (kann überwältigend sein).
+    private static boolean moreInfo = false;
     public static void run(List<Point> points, int k, int iterations) {
 
         Random random = new Random();
@@ -56,8 +58,17 @@ public class KMeans {
                 }
 
                 if (count > 0) {
+                    double oldX = centroids.get(i).x;
+                    double oldY = centroids.get(i).y;
+
                     centroids.get(i).x = sumX / count;
                     centroids.get(i).y = sumY / count;
+
+                    // Ausgabe
+                    if(moreInfo)
+                    System.out.println("Iteration " + it + ", Cluster " + i + ": Centroid verschoben von ("
+                            + oldX + ", " + oldY + ") nach ("
+                            + centroids.get(i).x + ", " + centroids.get(i).y + ")");
                 }
             }
         }
