@@ -1,4 +1,6 @@
-package KMeansHighDimensional;
+package KMeansHighDimensional.Analysis;
+
+import KMeansHighDimensional.DataPoint;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -72,6 +74,39 @@ public class FileParser {
             return Double.parseDouble(word.trim());
         } catch (NumberFormatException e) {
             return 0;
+        }
+    }
+
+    public static void writeDataPointsToCSV(List<DataPoint> data, String filename) {
+
+        File outDir = new File(getProjectRoot() + File.separator + "materials" + File.separator + "out");
+        System.out.println("Trying to write to "+outDir.getAbsolutePath());
+
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        File file = new File(outDir, filename);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+
+            for (DataPoint p : data) {
+
+                double[] features = p.getFeatures();
+
+                for (int i = 0; i < features.length; i++) {
+                    writer.write(String.valueOf(features[i]));
+                    writer.write(",");
+                }
+
+                writer.write(String.valueOf(p.getLabel()));
+                writer.newLine();
+            }
+
+            System.out.println("CSV written to: " + file.getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -93,4 +93,6 @@ public class AnalysisMethodes {
                 (printPointsFully ? closestPoint : "Analysis.printPointsFully is off"));
         System.out.println("Distance to its nearest neighbor: " + minNearestDist);
     }
+
+
 }

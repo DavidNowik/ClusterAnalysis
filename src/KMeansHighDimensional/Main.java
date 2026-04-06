@@ -1,7 +1,7 @@
 package KMeansHighDimensional;
 
-import KMeansHighDimensional.Analysis.AnalysisMethodes;
 import KMeansHighDimensional.Analysis.ClusterPlot;
+import KMeansHighDimensional.Analysis.FileParser;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class Main {
         int k = 10;
         int iterations = 50;
         int i = 1;
-        int NUMBER_OF_ANALYSES = 5;
+        int NUMBER_OF_ANALYSES = 10;
 
         System.out.println("Executing:");
         System.out.println("k = " + k);
