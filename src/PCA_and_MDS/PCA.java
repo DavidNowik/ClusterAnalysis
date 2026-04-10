@@ -1,5 +1,6 @@
-package PCA;
+package PCA_and_MDS;
 
+import Analysis.FileParser;
 import KMeansHighDimensional.DataPoint;
 import org.apache.commons.math3.linear.*;
 
@@ -9,6 +10,8 @@ import java.util.List;
 //Principal Component Analysis
 public class PCA {
 
+    //CAREFUL recution algorithms in this implementation EXPECT A LABEL
+    //giving a datalist without label can reduce accuracy
     public static List<DataPoint> reduce(List<DataPoint> data, int targetDim) {
 
         int n = data.size();
@@ -69,7 +72,8 @@ public class PCA {
             int label = data.get(i).getLabel();
             result.add(new DataPoint(features, label));
         }
-
+        FileParser.writeDataPointsToCSV(result, "reduced.csv");
+        System.out.println("Print example datapoint "+ result.get(0));
         return result;
     }
 }

@@ -1,4 +1,4 @@
-package KMeansHighDimensional.Analysis;
+package Analysis;
 
 import java.io.*;
 

@@ -54,4 +54,46 @@ public class Cluster {
 
         return Math.sqrt(sum);
     }
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Cluster{\n");
+
+        sb.append("  centroid = ");
+
+        if (centroid == null) {
+            sb.append("null");
+        } else {
+            sb.append("[");
+            for (int i = 0; i < centroid.length; i++) {
+                sb.append(centroid[i]);
+                if (i < centroid.length - 1) sb.append(", ");
+            }
+            sb.append("]");
+        }
+
+        sb.append(",\n  size = ").append(points.size());
+
+        sb.append(",\n  samplePoints = ");
+
+        int limit = Math.min(points.size(), 3); // avoid spam
+
+        sb.append("[");
+        for (int i = 0; i < limit; i++) {
+            sb.append(points.get(i).getFeaturesString());
+            if (i < limit - 1) sb.append(", ");
+        }
+
+        if (points.size() > 3) {
+            sb.append(", ...");
+        }
+
+        sb.append("]\n");
+
+        sb.append("}");
+
+        return sb.toString();
+    }
 }

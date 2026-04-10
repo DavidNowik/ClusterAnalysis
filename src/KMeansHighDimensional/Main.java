@@ -1,7 +1,7 @@
 package KMeansHighDimensional;
 
-import KMeansHighDimensional.Analysis.ClusterPlot;
-import KMeansHighDimensional.Analysis.FileParser;
+import Analysis.ClusterPlot;
+import Analysis.FileParser;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class Main {
         for (int j = 0; j < NUMBER_OF_ANALYSES; j++) {
 
 
-            List<DataPoint> data = FileParser.loadCSVorData("training.csv");
+            List<DataPoint> data = FileParser.loadCSVorData("training.csv", false);
 
 
             List<Cluster> clusters = KMeans.run(data, k, iterations);

@@ -1,4 +1,4 @@
-package KMeansHighDimensional.Analysis;
+package Analysis;
 
 import KMeansHighDimensional.Cluster;
 import KMeansHighDimensional.DataPoint;

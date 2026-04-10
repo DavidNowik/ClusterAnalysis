@@ -6,9 +6,31 @@ public class DataPoint {
     private double[] features;
     private int label;
 
+    public DataPoint(double[] features, boolean hasLabel) {
+
+        if (hasLabel) {
+            this.features = new double[features.length - 1];
+
+            for (int i = 0; i < features.length - 1; i++) {
+                this.features[i] = features[i];
+            }
+
+            label = (int) features[features.length - 1];
+        } else {
+            this.features = features;
+            autogenerateLabel();
+        }
+    }
     public DataPoint(double[] features, int label) {
-        this.features = features;
+        this.features = new double[features.length - 1];
+        for (int i = 0; i < features.length - 1; i++) {
+            this.features[i] = features[i];
+        }
         this.label = label;
+    }
+    private static int labelIndex = 0;
+    private void autogenerateLabel(){
+        label = labelIndex++;
     }
 
     public double[] getFeatures() {
@@ -44,5 +66,15 @@ public class DataPoint {
             sum += diff * diff;
         }
         return Math.sqrt(sum);
+    }
+    public String getFeaturesString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < features.length; i++) {
+            sb.append(features[i]);
+            if (i < features.length - 1) sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
