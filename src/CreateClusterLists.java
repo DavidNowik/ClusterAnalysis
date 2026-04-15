@@ -7,14 +7,46 @@ import Analysis.ConsoleLogger;
 import PCA_and_MDS.MDS;
 import PCA_and_MDS.PCA;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateClusterLists {
 
+    public static String fileToRead = "training_labeled.csv";
+    private static boolean printSizes = false;
     public static void main(String[] args) {
-        execute("none", 10, 10);
-        execute("pca", 10, 5);
+        FileParser.clearAnalysisFile();
+
+        for(int i = 0; i < 10; i++){
+
+            execute("none", 10, 10);
+            execute("pca", 10, 2);
+            execute("mds", 10, 2);
+
+            AnalyseStability.analyseStability("none");
+            AnalyseStability.analyseStability("pca");
+            AnalyseStability.analyseStability("mds");
+        }
+
+        runPythonScript();
+    }
+    public static void runPythonScript() {
+        try {
+            ProcessBuilder pb = new ProcessBuilder(
+                    "python",
+                    "pythonVisualisation/ReadAndPlotCollectedData.py"
+            );
+
+            pb.directory(new File("E:/Uni/ClusterAnalysis")); // 🔥 WICHTIG
+
+            pb.inheritIO();
+            Process process = pb.start();
+            process.waitFor();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -61,7 +93,7 @@ public class CreateClusterLists {
 
         for (int j = 0; j < NUMBER_OF_ANALYSES; j++) {
 
-            List<DataPoint> data = FileParser.loadCSVorData("training_labeled.csv", true);
+            List<DataPoint> data = FileParser.loadCSVorData(fileToRead, true);
             List<DataPoint> workingData;
             if(reductionType.toLowerCase() == "pca"){
                 System.out.println("Working with PCA");
@@ -91,10 +123,11 @@ public class CreateClusterLists {
             System.out.println("ATTEMPT: " + (j + 1));
 
             int i = 1;
-            for (Cluster c : clusters) {
-                System.out.println("Cluster " + i + " size: " + c.size());
-                i++;
-            }
+            if(printSizes)
+                for (Cluster c : clusters) {
+                    System.out.println("Cluster " + i + " size: " + c.size());
+                    i++;
+                }
             System.out.println();
 
         }

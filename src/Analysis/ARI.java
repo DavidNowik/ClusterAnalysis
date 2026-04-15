@@ -9,6 +9,7 @@ public class ARI {
 
     public static double computeARI(List<Cluster> a, List<Cluster> b) {
 
+        //Speichert Punkt-Label -> ClusterZugehörigkeit
         Map<Integer, Integer> labelA = buildMap(a);
         Map<Integer, Integer> labelB = buildMap(b);
 

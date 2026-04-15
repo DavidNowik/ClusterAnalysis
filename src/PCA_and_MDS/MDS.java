@@ -58,7 +58,8 @@ public class MDS {
         // 6. Convert back to DataPoints
         List<DataPoint> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            result.add(new DataPoint(coords[i], true));
+            int label = data.get(i).getLabel();
+            result.add(new DataPoint(coords[i], label));
         }
         FileParser.writeDataPointsToCSV(result, "reduced.csv");
 

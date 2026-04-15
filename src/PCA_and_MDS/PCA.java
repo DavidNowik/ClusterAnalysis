@@ -54,6 +54,7 @@ public class PCA {
 
         // ---------- 4. Eigen decomposition ----------
         EigenDecomposition eigen = new EigenDecomposition(covariance);
+        printExplainedVariance(eigen);
 
         RealMatrix eigenVectors = eigen.getV();
 
@@ -66,7 +67,6 @@ public class PCA {
 
         // ---------- 7. Convert back to DataPoints ----------
         List<DataPoint> result = new ArrayList<>();
-
         for (int i = 0; i < n; i++) {
             double[] features = reduced.getRow(i);
             int label = data.get(i).getLabel();
@@ -75,5 +75,36 @@ public class PCA {
         FileParser.writeDataPointsToCSV(result, "reduced.csv");
         System.out.println("Print example datapoint "+ result.get(0));
         return result;
+    }
+    private static void printExplainedVariance(EigenDecomposition eigen) {
+
+        double[] eigenValues = eigen.getRealEigenvalues();
+
+        // Summe aller Eigenwerte
+        double total = 0;
+        for (double v : eigenValues) {
+            total += v;
+        }
+
+        // sortieren (aufsteigend)
+        java.util.Arrays.sort(eigenValues);
+
+        System.out.println("Explained Variance Ratio:");
+
+        double cumulative = 0;
+
+        // von groß nach klein durchgehen
+        for (int i = eigenValues.length - 1; i >= 0; i--) {
+
+            double ratio = eigenValues[i] / total;
+            cumulative += ratio;
+
+            System.out.printf(
+                    "Component %d: %.4f (cumulative: %.4f)%n",
+                    (eigenValues.length - i),
+                    ratio,
+                    cumulative
+            );
+        }
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileParser {
-
+    private static boolean debug = false;
     private static String getProjectRoot() {
         return System.getProperty("user.dir");
     }
@@ -56,7 +56,7 @@ public class FileParser {
                 int n = parts.length;
                 double[] features = new double[n - 1];
                 for (int i = 0; i < n - 1; i++) {
-                        features[i] = parseAnything(parts[i]);
+                    features[i] = parseAnything(parts[i]);
                 }
                 int label = (int) parseAnything(parts[n - 1]);
                 data.add(new DataPoint(features, hasLabel));
@@ -79,7 +79,8 @@ public class FileParser {
     public static void writeDataPointsToCSV(List<DataPoint> data, String filename) {
 
         File outDir = new File(getProjectRoot() + File.separator + "materials" + File.separator + "out");
-        System.out.println("Trying to write to "+outDir.getAbsolutePath());
+        if(debug)
+            System.out.println("Trying to write to "+outDir.getAbsolutePath());
 
         if (!outDir.exists()) {
             outDir.mkdirs();
@@ -102,6 +103,7 @@ public class FileParser {
                 writer.newLine();
             }
 
+            if(debug)
             System.out.println("CSV written to: " + file.getAbsolutePath());
 
         } catch (IOException e) {
@@ -112,12 +114,15 @@ public class FileParser {
 
         File outDir;
         if(subfolder.isEmpty()){
+            if(debug)
             System.out.println("Has no subfolder");
             outDir = new File(getProjectRoot() + File.separator + "materials" + File.separator + "out");
         } else {
+            if(debug)
             System.out.println("Has subfolder");
             outDir = new File(getProjectRoot() + File.separator + "materials" + File.separator + "out" + File.separator + subfolder);
         }
+        if(debug)
         System.out.println("Trying to write to " + outDir.getAbsolutePath());
 
         if (!outDir.exists()) {
@@ -162,7 +167,8 @@ public class FileParser {
             writer.write("]");
             writer.newLine();
 
-            System.out.println("JSON written to: " + file.getAbsolutePath());
+            if(debug)
+                System.out.println("JSON written to: " + file.getAbsolutePath());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -180,7 +186,8 @@ public class FileParser {
             outDir = new File(getProjectRoot() + File.separator + "materials" + File.separator + "out" + File.separator + subfolder);
         }
 
-        System.out.println("Trying to write to " + outDir.getAbsolutePath());
+        if(debug)
+            System.out.println("Trying to write to " + outDir.getAbsolutePath());
 
         if (!outDir.exists()) {
             outDir.mkdirs();
@@ -232,17 +239,67 @@ public class FileParser {
             writer.write("]");
             writer.newLine();
 
-            System.out.println("Clusters JSON written to: " + file.getAbsolutePath());
+            if(debug)
+                System.out.println("Clusters JSON written to: " + file.getAbsolutePath());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    public static void clearAnalysisFile() {
+        try {
+            File outDir = new File(getProjectRoot() + File.separator + "materials");
 
+            if (!outDir.exists()) {
+                outDir.mkdirs();
+            }
+
+            File outFile = new File(outDir, "collected_analysis_data.txt");
+
+            FileWriter fw = new FileWriter(outFile, false); // FALSE = überschreiben!
+            fw.write(""); // leer machen
+            fw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void appendAnalysisResult(
+            String reductionType,
+            double avgARI,
+            double avgAMI,
+            double avgSIL
+    ) {
+        try {
+            File outDir = new File(getProjectRoot() + File.separator + "materials");
+
+            if (!outDir.exists()) {
+                outDir.mkdirs();
+            }
+
+            File outFile = new File(outDir, "collected_analysis_data.txt");
+
+            FileWriter fw = new FileWriter(outFile, true); // TRUE = append!!
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            String line = "reduction=" + reductionType +
+                    " | ARI=" + avgARI +
+                    " | AMI=" + avgAMI +
+                    " | SIL=" + avgSIL;
+
+            bw.write(line);
+            bw.newLine();
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void writePointsToCSV(List<Cluster> clusters, String filename) {
 
         File outDir = new File(getProjectRoot() + File.separator + "materials" + File.separator + "out");
-        System.out.println("Trying to write to " + outDir.getAbsolutePath());
+        if(debug)
+            System.out.println("Trying to write to " + outDir.getAbsolutePath());
 
         if (!outDir.exists()) {
             outDir.mkdirs();
@@ -278,7 +335,8 @@ public class FileParser {
                 }
             }
 
-            System.out.println("CSV written to: " + file.getAbsolutePath());
+            if (debug)
+                System.out.println("CSV written to: " + file.getAbsolutePath());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -294,7 +352,8 @@ public class FileParser {
         File inputFile = new File(fullInput);
         File outputFile = new File(fullOutput);
 
-        System.out.println(fullOutput+" written from "+fullOutput);
+        if(debug)
+            System.out.println(fullOutput+" written from "+fullOutput);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
