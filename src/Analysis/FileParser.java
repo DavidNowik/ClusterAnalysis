@@ -59,7 +59,7 @@ public class FileParser {
                     features[i] = parseAnything(parts[i]);
                 }
                 int label = (int) parseAnything(parts[n - 1]);
-                data.add(new DataPoint(features, hasLabel));
+                data.add(new DataPoint(features, label));
             }
         } catch (IOException | NumberFormatException ex) {
             System.out.println("Stopped at " + debug);

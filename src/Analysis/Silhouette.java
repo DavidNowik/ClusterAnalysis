@@ -6,6 +6,7 @@ import KMeansHighDimensional.DataPoint;
 import java.util.*;
 
 public class Silhouette {
+    public static String debugReductionString = "default";
 
     public static double computeSilhouette(List<Cluster> clusters) {
 
@@ -49,6 +50,7 @@ public class Silhouette {
             totalScore += s;
         }
 
+        System.out.println("totalScore "+totalScore+" size "+allPoints.size());
         return totalScore / allPoints.size();
     }
 

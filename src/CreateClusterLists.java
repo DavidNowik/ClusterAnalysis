@@ -1,4 +1,5 @@
 import Analysis.FileParser;
+import Analysis.Silhouette;
 import KMeansHighDimensional.Cluster;
 import KMeansHighDimensional.ClusterGroup;
 import KMeansHighDimensional.DataPoint;
@@ -13,17 +14,17 @@ import java.util.List;
 
 public class CreateClusterLists {
 
-    public static String fileToRead = "training_labeled.csv";
+    public static String fileToRead = "synthetic_200D_labeled.csv";
     private static boolean printSizes = false;
+    private static int targetDim = 5;
     public static void main(String[] args) {
         FileParser.clearAnalysisFile();
 
         for(int i = 0; i < 10; i++){
 
-            execute("none", 10, 10);
-            execute("pca", 10, 2);
-            execute("mds", 10, 2);
-
+            execute("none", 10, 0);//target dim doesnt matter, no reduction happening
+            execute("pca", 10, targetDim);
+            execute("mds", 10, targetDim);
             AnalyseStability.analyseStability("none");
             AnalyseStability.analyseStability("pca");
             AnalyseStability.analyseStability("mds");
@@ -38,7 +39,7 @@ public class CreateClusterLists {
                     "pythonVisualisation/ReadAndPlotCollectedData.py"
             );
 
-            pb.directory(new File("E:/Uni/ClusterAnalysis")); // 🔥 WICHTIG
+            pb.directory(new File("E:/Uni/ClusterAnalysis"));
 
             pb.inheritIO();
             Process process = pb.start();
@@ -71,7 +72,7 @@ public class CreateClusterLists {
     private static void execute(String reductionType, int k, int targetDimension){
 
         int iterations = 50;//K-Means-spezifisch
-        int NUMBER_OF_ANALYSES = 50;
+        int NUMBER_OF_ANALYSES = 50;//Wie viele Clusteranalysen durchgeführt werden
 
         sizesIndex = 0;
         listsIndex = 0;
@@ -97,11 +98,11 @@ public class CreateClusterLists {
             List<DataPoint> workingData;
             if(reductionType.toLowerCase() == "pca"){
                 System.out.println("Working with PCA");
-                workingData = PCA.reduce(data, targetDimension);
+                workingData = PCA.reduce(data, targetDimension, true);
             }
             else if(reductionType.toLowerCase() == "mds"){
                 System.out.println("Working with MDS");
-                workingData = MDS.reduce(data, targetDimension);
+                workingData = MDS.reduce(data, targetDimension, true);
             }
             else {
                 System.out.println("Working with no Reduction");

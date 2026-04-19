@@ -4,6 +4,7 @@ import Analysis.FileParser;
 import KMeansHighDimensional.DataPoint;
 import org.apache.commons.math3.linear.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class PCA {
 
     //CAREFUL recution algorithms in this implementation EXPECT A LABEL
     //giving a datalist without label can reduce accuracy
-    public static List<DataPoint> reduce(List<DataPoint> data, int targetDim) {
+    public static List<DataPoint> reduce(List<DataPoint> data, int targetDim, boolean hasLabel) {
 
         int n = data.size();
         int d = data.get(0).size();
@@ -69,8 +70,13 @@ public class PCA {
         List<DataPoint> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             double[] features = reduced.getRow(i);
-            int label = data.get(i).getLabel();
-            result.add(new DataPoint(features, label));
+            if(hasLabel){
+                int label = data.get(i).getLabel();
+                result.add(new DataPoint(features, label));
+            }
+            else
+                result.add(new DataPoint(features, false));
+
         }
         FileParser.writeDataPointsToCSV(result, "reduced.csv");
         System.out.println("Print example datapoint "+ result.get(0));
@@ -99,12 +105,6 @@ public class PCA {
             double ratio = eigenValues[i] / total;
             cumulative += ratio;
 
-            System.out.printf(
-                    "Component %d: %.4f (cumulative: %.4f)%n",
-                    (eigenValues.length - i),
-                    ratio,
-                    cumulative
-            );
         }
     }
 }

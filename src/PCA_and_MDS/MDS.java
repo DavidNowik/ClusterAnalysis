@@ -15,7 +15,7 @@ public class MDS {
 
     //CAREFUL recution algorithms in this implementation EXPECT A LABEL
     //giving a datalist without label can reduce accuracy
-    public static List<DataPoint> reduce(List<DataPoint> data, int targetDim) {
+    public static List<DataPoint> reduce(List<DataPoint> data, int targetDim, boolean hasLabel) {
         int n = data.size();
 
         // 1. Compute squared distance matrix
@@ -58,8 +58,13 @@ public class MDS {
         // 6. Convert back to DataPoints
         List<DataPoint> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            int label = data.get(i).getLabel();
-            result.add(new DataPoint(coords[i], label));
+            if(hasLabel){
+                int label = data.get(i).getLabel();
+                result.add(new DataPoint(coords[i], label));
+            }
+            else{
+                result.add(new DataPoint(coords[i], false));
+            }
         }
         FileParser.writeDataPointsToCSV(result, "reduced.csv");
 
