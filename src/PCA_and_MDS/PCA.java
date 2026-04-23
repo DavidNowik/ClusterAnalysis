@@ -42,9 +42,23 @@ public class PCA {
             mean[j] = sum / n;
         }
 
+        double[] std = new double[d];
+
+        for (int j = 0; j < d; j++) {
+            double sum = 0;
+            for (int i = 0; i < n; i++) {
+                double diff = matrix[i][j] - mean[j];
+                sum += diff * diff;
+            }
+            std[j] = Math.sqrt(sum / (n - 1));
+        }
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < d; j++) {
-                matrix[i][j] -= mean[j];
+                if(std[j] > 0.01)
+                    matrix[i][j] -= mean[j];
+                else
+                    matrix[i][j] = (matrix[i][j] - mean[j]) / std[j];
             }
         }
 
@@ -105,6 +119,9 @@ public class PCA {
             double ratio = eigenValues[i] / total;
             cumulative += ratio;
 
+            System.out.println("PC " + (eigenValues.length - i) +
+                    ": ratio = " + ratio +
+                    ", cumulative = " + cumulative);
         }
     }
 }
