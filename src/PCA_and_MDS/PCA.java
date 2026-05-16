@@ -55,7 +55,7 @@ public class PCA {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < d; j++) {
-                if(std[j] > 0.01)
+                if(std[j] < 0.01)
                     matrix[i][j] -= mean[j];
                 else
                     matrix[i][j] = (matrix[i][j] - mean[j]) / std[j];
