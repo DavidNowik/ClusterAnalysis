@@ -14,9 +14,9 @@ import java.util.List;
 
 public class CreateClusterLists {
 
-    public static String fileToRead = "synthetic_200D_labeled.csv";
+    public static String fileToRead = "training_labeled.csv";
     private static boolean printSizes = false;
-    private static int targetDim = 5;
+    private static int targetDim = 6;// 6 means 5 dims label is one
     public static void main(String[] args) {
         FileParser.clearAnalysisFile();
 
